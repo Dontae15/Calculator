@@ -28,35 +28,56 @@ function divideNumbers(...numbers) {
             return acc / current;
         }
     });
+
 }
 
+function performOperations(expression) {
+    // Parsing the expression to extract numbers and operators
+    const parts = expression.split(/([+\-*/])/).map(part => part.trim());
 
-let firstNumber = ''
-let operator = ''
-let secondNumber = ''
+    let result = parseFloat(parts[0]);
 
+    for (let i = 1; i < parts.length; i += 2) {
+        const operator = parts[i];
+        const num = parseFloat(parts[i + 1]);
 
-function operate(num1, operator, num2) {
-    switch(operator) {
-        case '+':
-            return addNumbers(num1, num2);
-        case '-':
-            return subtractNumbers(num1, num2);
-        case '*':
-            return multiplyNumbers(num1, num2);
-        case '/':
-            return divideNumbers(num1, num2);
-        default:
-            return "Invalid operator";
+        switch (operator) {
+            case '+':
+                result += num;
+                break;
+            case '-':
+                result -= num;
+                break;
+            case '*':
+                result *= num;
+                break;
+            case '/':
+                if (num === 0) {
+                    console.log("Division by zero is undefined. Skipping this operation.");
+                    break;
+                }
+                result /= num;
+                break;
+            default:
+                return "Invalid operator";
+        }
     }
-    
-}  
+
+    return result;
+}
+
+console.log(performOperations("2 + 5 * 8 / 3")); // Output: 18.666666666666668
 
 
 
 
 
-const buttons = [
+
+
+
+
+
+    const buttons = [
     { text: '1', class: 'btn-1' },
     { text: '2', class: 'btn-2' },
     { text: '3', class: 'btn-3' },
@@ -88,27 +109,26 @@ buttons.forEach(button => {
 });
 
 
+document.querySelectorAll('.calc-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const display = document.getElementById('display');
+        const value = this.textContent;
+
+        if (value === '=') {
+            // Perform calculation
+            display.textContent = performOperations(display.textContent).toString();
+        } else if (value === 'C') {
+            // Clear display
+            display.textContent = '';
+        } else {
+            // Append number/operator to display
+            display.textContent += value;
+        }
+    });
+});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 });
 
 
